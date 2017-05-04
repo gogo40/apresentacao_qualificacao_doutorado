@@ -1,8 +1,8 @@
 \section{Fourier Integral Method}
 \begin{frame}{Fourier Integral Method}
   \begin{itemize}
-  	\item The density spectrum $s(\omega)$ created in the last sections can be used directly to generate unconditional realizations. This is the \textit{Fourier Integral Method (FIM)} \cite{pardo1993fourier}.
-    \item The covariance table $C(h)$ can be generated using the following equation:
+  	\item The density spectrum $s(\omega)$ created in the last section can be used directly to generate unconditional realizations. This is the \textit{Fourier Integral Method (FIM)} \cite{pardo1993fourier}.
+    \item The covariance table $C(h)$ of a gaussian function $z(p)$, with distribution $N(0, \sigma^2)$ and $p=(x,y,z)$, can be generated using the following equation:
     $$
     C(h) = z * z = \mathscr{F}^{-1}[Z(\omega) \cdot Z(\omega)],
     $$
@@ -21,13 +21,22 @@
   	\item The density spectrum $s(\omega)$ can be used  to recover the magnitude of the original data function $z(p)$, because $|Z(\omega)| = \sqrt{s(\omega)}$. Remembering that $s(\omega) \geq 0$ is a positive function. Also, $\sum |s(\omega)| = C(0)$.
     \item In the FIM simulation, the lost angle $\theta(\omega)$ is re-added to the density spectrum  $\sqrt{s(\omega)}$. And data conditioning is realized using error kriging.
     \item The unconditional simulation is done generating random angles $\theta(\omega)$ from an uniform distribution $U(-\pi,\pi)$.
-    \item Then, the unconditional realization $z^{r}(p)$ is generated using the equation $z^{r}(p) = \mathscr{F}^{-1}[\sqrt{s(\omega)}e^{i\theta(\omega)}]$. Without loss of generality, let assume that $Z^{r}(p)=\sqrt{s(\omega)}e^{i\theta(\omega)}$ is even (this assure that the inverse is a real function).
+    \item Then, the unconditional realization $z^{r}(p)$ is generated using the equation $z^{r}(p) = \mathscr{F}^{-1}[\sqrt{s(\omega)}e^{i\theta(\omega)}]$. 
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Unconditional simulation using Covariance table and FIM}
+
+\begin{frame}{Fourier Integral Method}
+  \begin{itemize}
+    \item $Z^{r}(\omega) = \sqrt{s(\omega)}e^{i\theta(\omega)}$ be even is a needed condition to $z^{r}(p)$ be real. This can be achieved forcing the symmetry $Z(\omega) = Z(-\omega)$ and considering only the first sector (points $p=(x, y, z)$ where $x \geq 0$, $y \geq 0$ and $z \geq 0$ of the back-transformation $\mathscr{F}^{-1}[\sqrt{s(\omega)}e^{i\theta(\omega)}]$. 
+    \item In practice, FIM simulation is used to simulate a limited and finite region of space, then the previous assumption can be implemented without loss of generality, because the other sectors are only repetitions of the first sector. 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Unconditional simulation using covariance table and FIM}
+Example of unconditional simulation using a smoothed covariance table generated using the Walker Lake dataset.
 \begin{figure}[!ht]
-  \caption{Example of unconditional simulation using a smoothed covariance table generated using the Walker Lake dataset.}
+  %\caption{Example of unconditional simulation using a smoothed covariance table generated using the Walker Lake dataset.}
   \centering
     \includegraphics[height=0.5\textheight]{figs/sim_cov_table.png}
     \label{cov_table_sim.fig}
@@ -37,16 +46,16 @@
 
 \begin{frame}{Advantages of Fourier Integral Method}
 \begin{itemize}
-	\item FIM doesn't need a random path.
-    \item The generated covariance table from data can be used directly to generate the unconditional simulations and conditioning.
+	\item FIM does not need a random path.
+    \item The generated covariance table from data can be used directly to generate the conditional and unconditional simulations.
     \item FIM is embarrassingly parallel.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Drawbacks of Fourier Integral Method}
 \begin{itemize}
-	\item It's highly dependent on the correct adjust of the simulation grid. The grid discretization (cell size) is directly related to the quality of simulation. A more continuous spatial input data demands a small cell size. This fact is explained by the Nyquist Sampling Theorem \cite{pardo1993fourier}. 
-    \item The FFT in non-equally sampled vector of data isn't a trivial problem \cite{keiner2009using}.
+	\item It  is highly dependent on the correct adjust of the simulation grid. The grid discretization (cell size) is directly related to the simulation quality. A more continuous spatial input data demands a small cell size. This fact is explained by the Nyquist Sampling Theorem \cite{pardo1993fourier}. 
+    \item The FFT in non-equally sampled vector of data is not a trivial problem \cite{keiner2009using}.
 \end{itemize}
 \end{frame}
 
